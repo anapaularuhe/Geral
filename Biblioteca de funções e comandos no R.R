@@ -51,6 +51,7 @@
 # ---------------------------------------
 # 2. MANIPULAÇÃO DE DADOS
 # 2.1 Pacotes
+      tidyverse                # Conjunto de pacotes para data science
       dplyr                    # Manipular dados
       stats                    # Lidar com séries de tempo
       tseries                  # " "
@@ -125,3 +126,25 @@
          labels = c("nome 1", "nome 2"),
          cex = 0.6,                              # Tamanho da fonte
          pos = 3)                                # Posiciona os labels acima dos pontos
+    
+    
+  # Gráfico com a função ggplot:  
+    # Função usa como input data um dataframe. Acrescenta camadas com o + no fim da linha.
+    # aes() determina quais são as variáveis nos eixos x e y e outras características estéticas. 
+      # Se for inserida em ggplot, é entendido como comando global.
+      # Se for inserida dentro de uma geom, é entendida como parâmetro local para aquela geom.
+       
+    ggplot(data = DF) +                          
+      geom_point(mapping = aes(x = X, y = Y, color = "Nome Y"),              # Cria um gráfico de pontos
+                                                                               # Color dentro de aes cria legenda com o nome, color fora apenas muda a cor: color = "red"
+                 size = 2,                                                   # Tamanho do ponto 
+                 shape = 20) +                                               # Formato do ponto
+      geom_line(mapping = aes(x = X, y = Z, color = "Nome Z")) +             # Cria um gráfico de linha
+      scale_color_manual(values = c("Nome Y" = "blue", "Nome Z" = "red")) +  # Atribui cores às categorias
+      labs(x = "Nome eixo X",                                                # Ajustando nomes dos eixos e legendas
+           y = TeX('$nome com matemática$'),
+           color =  "Título da legenda por cor") +
+      coord_cartesian(xlim = c(0,25), ylim = c(0,15)) +                      # Limites dos eixos
+      theme_classic()                                                        # Tema do gráfico: fundo branco, eixo em preto
+    
+    ggsave("Gráfico MV x Rho.jpeg", grafico, width = 15, units = "cm")
