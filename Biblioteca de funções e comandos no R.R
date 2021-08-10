@@ -19,6 +19,8 @@
   # Diversos:  
     class()                    # Indica a classe de um objeto
     length()                   # Indica o tamanho de um vetor
+    str()                      # Compactly display the internal structure of an R object
+    summary()                  # Semelhante a str()
     print(x, digits = y)       # Printa a variável x no console arredondando para y casas decimais
     numeric(n)                 # Cria vetor de 0 de tamanho n da classe numeric
      
