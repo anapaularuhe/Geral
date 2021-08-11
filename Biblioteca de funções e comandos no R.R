@@ -12,9 +12,17 @@
     rm()                       # Remove do environment o objeto indicado
     rm(list = ls())            # Limpa o environment
     
+  # Instalação de pacotes:
+    install.packages("nome")   
+    library(nome)              # O pacote tem que ser lido cada vez que o R é aberto
+    
   # Ajuda e documentação: duas formas são equivalentes
     help(função) 
     ?função
+    
+  # Programação eficiente:
+    magrittr                   # Pacote com o operador "forward-pipe" %>% , que pode ser lido como "e então". Mais info: https://uc-r.github.io/pipe
+    
     
   # Diversos:  
     class()                    # Indica a classe de um objeto
@@ -23,16 +31,13 @@
     summary()                  # Semelhante a str()
     print(x, digits = y)       # Printa a variável x no console arredondando para y casas decimais
     numeric(n)                 # Cria vetor de 0 de tamanho n da classe numeric
+    paste()                    # Concatenate strings   
      
    
   
   # Comandos lógicos:
     !    não
     
-    
-  # Instalação de pacotes:
-    install.packages("nome")   
-    library(nome)              # O pacote tem que ser lido cada vez que o R é aberto
  
   # Importar e exportar dados
     # Pacotes:  
@@ -80,10 +85,16 @@
       row.names                # Dá nome as linhas
       
       
+# ---------------------------------------    
+# 3. MACHINE LEARNING      
+# 3.1 Pacotes
+  caret
+  tidymodels    
+      
       
 # ---------------------------------------
-# 3. FUNÇÕES
-# 3.1 Matrizes
+# 4. FUNÇÕES
+# 4.1 Matrizes
   t()                          # Transposta
   diag()                       # Diagonal principal
   matrix(dados,nrow,ncol)      # Cria uma matriz
@@ -92,7 +103,7 @@
 
       
 # ---------------------------------------
-# 4. ALGUNS EXEMPLOS
+# 5. ALGUNS EXEMPLOS
   # Editando o formato de data de um dataframe: coluna "date" veio no formato "yyyymm"    
     date <- as.character(df$date)              # Transforma em character
     
@@ -150,3 +161,16 @@
       theme_classic()                                                        # Tema do gráfico: fundo branco, eixo em preto
     
     ggsave("Gráfico MV x Rho.jpeg", grafico, width = 15, units = "cm")
+    
+    
+  # Criando nome de variáveis com a função paste() e exemplo do operador %>%
+    # Seja x um data frame importado. Formato 1:
+    N = ncol(x)                                       # Número de colunas de x
+    nomes = paste("Característica",1:N, sep = " ")    # Vetor do tipo "Característica 1, Característica 2,..."
+    names(x) = nomes
+    
+    # Formato 2: usando pipe operator
+    x %>%
+      set_colnames(paste("Característica",1:N, sep = " "))
+    
+    # Note: não criamos a variável "nomes", desnecessária
