@@ -22,7 +22,7 @@
     
   # Programação eficiente:
     magrittr                   # Pacote com o operador "forward-pipe" %>% , que pode ser lido como "e então". Mais info: https://uc-r.github.io/pipe
-    
+    alt -                      # Comando que gera o assingment symbol <-  
     
   # Diversos:  
     class()                    # Indica a classe de um objeto
@@ -31,6 +31,7 @@
     summary()                  # Semelhante a str()
     print(x, digits = y)       # Printa a variável x no console arredondando para y casas decimais
     numeric(n)                 # Cria vetor de 0 de tamanho n da classe numeric
+    vector()                   # Cria um vetor vazio; argumento "mode" determina a classe. Ex: vector(mode = "numeric") cria apenas o espaço na memória (pode transformar em vetor numérico de qualquer tamanho).
     paste()                    # Concatenate strings   
      
    
@@ -85,6 +86,10 @@
       row.names                # Dá nome as linhas
       
       
+# 2.3 Estatísticas descritivas
+  skimr                        # Pacote    
+  skimr::skim_to_wide()        # Função - Retorna um data frame com um resumo das informações de forma visualmente organizada
+      
 # ---------------------------------------    
 # 3. MACHINE LEARNING      
 # 3.1 Pacotes
@@ -100,6 +105,15 @@
   matrix(dados,nrow,ncol)      # Cria uma matriz
       
 
+# 4.2 Otimização 
+  optimize()                   # Geral, 1 dimensão
+  optim()                      # Geral, n dimensões
+  lp()        (lpSolve)        # Programação linear (objetivo e restrições lineares)
+  solve.QP    (quadprog)       # Programação quadrática (objetivo quadrática, restrições lineares)
+  optimize    (optimize)       # Programação não-linear
+  optimx      (optimx)         # Programação não-linear
+  # Mais detalhes: https://cran.r-project.org/web/views/Optimization.html 
+  #                https://www.is.uni-freiburg.de/resources/computational-economics/5_OptimizationR.pdf
 
       
 # ---------------------------------------
