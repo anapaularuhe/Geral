@@ -27,13 +27,14 @@
   # Diversos:  
     class()                    # Indica a classe de um objeto
     length()                   # Indica o tamanho de um vetor
-    str()                      # Compactly display the internal structure of an R object
-    summary()                  # Semelhante a str()
     print(x, digits = y)       # Printa a variável x no console arredondando para y casas decimais
     numeric(n)                 # Cria vetor de 0 de tamanho n da classe numeric
     vector()                   # Cria um vetor vazio; argumento "mode" determina a classe. Ex: vector(mode = "numeric") cria apenas o espaço na memória (pode transformar em vetor numérico de qualquer tamanho).
+                               ## Pode criar listas também: vector(mode = "list").
+    list()                     # Transforma em lista os objetos dentro do ()
     paste()                    # Concatenate strings   
-     
+    
+    strptime()                 # Função para converter Time <=> Character 
    
   
   # Comandos lógicos:
@@ -44,12 +45,17 @@
     # Pacotes:  
       readxl                   # Ler arquivos de excel
       writexl                  # Salvar arquivos em excel
+      readr                    # Pacote com funções otimizadas
     
     # Funções:
       read.csv("C:/...")
       write.csv() 
       read_excel("C:/...")     (readxl)
-      write_xlsx()             (writexl)  
+      write_xlsx()             (writexl)
+      read.table               # Função para importação de dados. Ver parâmetros no help. Informar colClasses torna processo muito mais rápido.
+      
+      read_csv                 (readr)    # Funções otimizadas. Muito mais rápidas na importação dos dados! 
+      read_table               (readr)    # ""
 
       
   # Latex:
@@ -69,27 +75,38 @@
       
       
 # 2.2 Funções
-      c()                      # Concatenar (juntar variáveis em vetor)
-      rbind()                  # Junta vetores/matrizes/df empilhando as linhas
-      data.frame()             # Criar dataframe a partir dos inputs
-      - data.frame(nome1 = v1, nome2 = v2, row.names = vetordenomes)
-      - Para acrescentar uma nova coluna "y": df$y = dadosy
-      - Para excluir uma coluna "y": df$y = NULL
-      as.data.frame()          # Transforma conjunto de dados em dataframe
+  # Criar data frames:
+    data.frame()               # Criar dataframe a partir dos inputs
+    - data.frame(nome1 = v1, nome2 = v2, row.names = vetordenomes)
+    - Para acrescentar uma nova coluna "y": df$y = dadosy
+    - Para excluir uma coluna "y": df$y = NULL
+    as.data.frame()            # Transforma conjunto de dados em dataframe
       
-      
+    
+  # Concatenação:
+    c()                        # Concatenar (juntar variáveis em vetor)
+    rbind()                    # Junta vetores/matrizes/df empilhando as linhas
+    cbind()                    # Junta vetores/matrizes/df empilhando as colunas
       fix()    (utils)         # Permite corrigir os valores em um dataframe
       filter() (dplyr)         # Permite filtrar determinada característica nos dados (seleciona os dados que satisfazem a característica) 
       duplicated()             # Identifica dados com a característica citada duplicada
+      
+  # Funções para nomear objetos:   
+    # Data frame:  
       names()                  # Atribui um nome y a um objeto x: names(x) = y
       names()[i]               # Atribui nome ao objeto i de um dataframe
       row.names                # Dá nome as linhas
-      
+    # Matriz:
+      colnames()
+      rownames()      
       
 # 2.3 Estatísticas descritivas
   skimr                        # Pacote    
   skimr::skim_to_wide()        # Função - Retorna um data frame com um resumo das informações de forma visualmente organizada
-      
+  
+  str()                        # Compactly display the internal structure of an R object
+  summary()                    # Semelhante a str()
+  
 # ---------------------------------------    
 # 3. MACHINE LEARNING      
 # 3.1 Pacotes
@@ -101,8 +118,22 @@
 # 4. FUNÇÕES
 # 4.1 Matrizes
   t()                          # Transposta
-  diag()                       # Diagonal principal
+  diag()                       # diag(A) = vetor das entradas da diagonal principal; diag(x) = retorna matriz diagonal com elementos de x
+  solve()                      # Inversa (função que resolve sistemas de equações)
+  det()                        # Determinante
+  dim()                        # Nº dimensões
+  nrow()
+  ncol()
   matrix(dados,nrow,ncol)      # Cria uma matriz
+  
+  # Operações: 
+    A*B                        # Multiplicação point-wise
+    A/B                        # Divisão point-wise
+    A%*%B                      # Multiplicação de matrizes
+    colSums()                  # Soma dos valores nas colunas
+    rowSums()                  # Soma dos valores nas linhas
+    colMeans()                 # Média das colunas
+    rowMeans()                 # Média das linhas
       
 
 # 4.2 Otimização 
@@ -118,7 +149,7 @@
       
 # ---------------------------------------
 # 5. ALGUNS EXEMPLOS
-  # Editando o formato de data de um dataframe: coluna "date" veio no formato "yyyymm"    
+### Editando o formato de data de um dataframe: coluna "date" veio no formato "yyyymm"    
     date <- as.character(df$date)              # Transforma em character
     
     for(i in 1:(length(date))){
@@ -131,15 +162,23 @@
     
     Date = as.Date(date, format = "%Y-%m-%d")  # Transforma em formato de Data
     
+ 
     
     
-  # Escrevendo em Latex com latex2exp
+### Impotando dados com read.table e informando colClasses
+    inicial <- read.table("datatable.txt", nrows = 100)
+    classes <- sapply(inicial, class)
+    data <- read.table("datatable.txt", colClasses = classes)
+     
+    
+    
+### Escrevendo em Latex com latex2exp
     TeX('$\\beta$')         # Letra grega beta  
     TeX('$E(R^e)$')         # Exemplo de expressão com índices  
 
     
     
-  # Gráfico com a função plot:
+### Gráfico com a função plot:
     par(mar = c(4,4.5,1,1))                      # Ajustando tamanho da margem 
     plot(x, y,                                   # Variáveis plotadas
          type ="p", pch = 20, cex = 2,           # Formatação do ponto plotado
@@ -155,7 +194,7 @@
          pos = 3)                                # Posiciona os labels acima dos pontos
     
     
-  # Gráfico com a função ggplot:  
+### Gráfico com a função ggplot:  
     # Função usa como input data um dataframe. Acrescenta camadas com o + no fim da linha.
     # aes() determina quais são as variáveis nos eixos x e y e outras características estéticas. 
       # Se for inserida em ggplot, é entendido como comando global.
@@ -177,7 +216,7 @@
     ggsave("Gráfico MV x Rho.jpeg", grafico, width = 15, units = "cm")
     
     
-  # Criando nome de variáveis com a função paste() e exemplo do operador %>%
+### Criando nome de variáveis com a função paste() e exemplo do operador %>%
     # Seja x um data frame importado. Formato 1:
     N = ncol(x)                                       # Número de colunas de x
     nomes = paste("Característica",1:N, sep = " ")    # Vetor do tipo "Característica 1, Característica 2,..."
