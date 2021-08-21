@@ -12,6 +12,11 @@
     rm()                       # Remove do environment o objeto indicado
     rm(list = ls())            # Limpa o environment
     
+  # Configuração de exibição de casas decimais e notação científica  
+    options(scipen = 100, digits = n)    
+    # scipen indica quantas casas guardar em decimais (evitando notação científica)
+    # digits indica quanto dígitos exibir
+    
   # Instalação de pacotes:
     install.packages("nome")   
     library(nome)              # O pacote tem que ser lido cada vez que o R é aberto
@@ -33,8 +38,6 @@
                                ## Pode criar listas também: vector(mode = "list").
     list()                     # Transforma em lista os objetos dentro do ()
     paste()                    # Concatenate strings   
-    
-    strptime()                 # Função para converter Time <=> Character 
    
   
   # Comandos lógicos:
@@ -81,24 +84,35 @@
     - Para acrescentar uma nova coluna "y": df$y = dadosy
     - Para excluir uma coluna "y": df$y = NULL
     as.data.frame()            # Transforma conjunto de dados em dataframe
-      
     
   # Concatenação:
     c()                        # Concatenar (juntar variáveis em vetor)
     rbind()                    # Junta vetores/matrizes/df empilhando as linhas
     cbind()                    # Junta vetores/matrizes/df empilhando as colunas
-      fix()    (utils)         # Permite corrigir os valores em um dataframe
-      filter() (dplyr)         # Permite filtrar determinada característica nos dados (seleciona os dados que satisfazem a característica) 
-      duplicated()             # Identifica dados com a característica citada duplicada
+    fix()                      # Permite corrigir os valores em um dataframe
+    duplicated()               # Identifica dados com a característica citada duplicada
       
+    
+  # Pacote dplyr:
+    select()                   # Seleciona um subconjunto das COLUNAS de um dataframe
+    filter()                   # Seleciona um subconjunto das LINHAS de um dataframe, filtrando por determinada característica (condição lógica)   
+    arrange()                  # Reordena as linha
+    rename()                   # Muda o nome das variáveis
+    mutate()                   # Adiciona novas variáveis (colunas) ou transforma variáveis existentes
+    summarize()                # Gera um resumo de estatísticas descritivas das variáveis no dataframe
+    
+    
   # Funções para nomear objetos:   
     # Data frame:  
       names()                  # Atribui um nome y a um objeto x: names(x) = y
       names()[i]               # Atribui nome ao objeto i de um dataframe
+      rename()                 # Muda o nome das variáveis
       row.names                # Dá nome as linhas
     # Matriz:
       colnames()
       rownames()      
+      
+      
       
 # 2.3 Estatísticas descritivas
   skimr                        # Pacote    
@@ -106,14 +120,30 @@
   
   str()                        # Compactly display the internal structure of an R object
   summary()                    # Semelhante a str()
+  summarize()                  # Gera um resumo de estatísticas descritivas das variáveis
   
+  
+  
+# 2.4 Datas e Tempo
+  # Data: classe DATE
+  # Tempo: classes POSIXct e POIXlt
+  
+  # Funções para conversão:
+    strptime()                 # Função para converter Time <=> Character 
+    as.Date()
+    as.POSIXct()
+    as.POSIXlt()
+  
+    
+    
 # ---------------------------------------    
 # 3. MACHINE LEARNING      
 # 3.1 Pacotes
   caret
   tidymodels    
       
-      
+    
+    
 # ---------------------------------------
 # 4. FUNÇÕES
 # 4.1 Matrizes
@@ -135,6 +165,7 @@
     colMeans()                 # Média das colunas
     rowMeans()                 # Média das linhas
       
+    
 
 # 4.2 Otimização 
   optimize()                   # Geral, 1 dimensão
@@ -146,7 +177,19 @@
   # Mais detalhes: https://cran.r-project.org/web/views/Optimization.html 
   #                https://www.is.uni-freiburg.de/resources/computational-economics/5_OptimizationR.pdf
 
-      
+
+  
+# 4.3 Variáveis aleatórias
+  runif()                      # Gerar V.A. a partir da distribuição uniforme
+  rnorm()                      # Gerar V.A. a partir da distribuição normal  
+  
+  
+# 4.4 Loops
+  seq_along()                  # seq_along(x) gera a sequência de inteiros 1:length(x)
+                               ## Para X matriz: seq_along(nrow(X))
+     
+  
+     
 # ---------------------------------------
 # 5. ALGUNS EXEMPLOS
 ### Editando o formato de data de um dataframe: coluna "date" veio no formato "yyyymm"    
@@ -161,7 +204,6 @@
     }
     
     Date = as.Date(date, format = "%Y-%m-%d")  # Transforma em formato de Data
-    
  
     
     
@@ -192,7 +234,8 @@
          labels = c("nome 1", "nome 2"),
          cex = 0.6,                              # Tamanho da fonte
          pos = 3)                                # Posiciona os labels acima dos pontos
-    
+  
+      
     
 ### Gráfico com a função ggplot:  
     # Função usa como input data um dataframe. Acrescenta camadas com o + no fim da linha.
@@ -214,6 +257,7 @@
       theme_classic()                                                        # Tema do gráfico: fundo branco, eixo em preto
     
     ggsave("Gráfico MV x Rho.jpeg", grafico, width = 15, units = "cm")
+    
     
     
 ### Criando nome de variáveis com a função paste() e exemplo do operador %>%
