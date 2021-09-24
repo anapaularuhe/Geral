@@ -1,8 +1,8 @@
 # BIBLIOTECA DE FUNÇÕES E COMANDOS NO R
 # Ana Paula Nothen Ruhe
 
-# ---------------------------------------
-# 1. GERAL
+
+# 1. GERAL --------------------------------------
   # Diretório: pasta onde os arquivos são salvos e abertos
     getwd()                    # Informa o diretório atual 
     setwd("C:/...")            # Altera o diretório para o endereço informado
@@ -24,6 +24,8 @@
   # Ajuda e documentação: duas formas são equivalentes
     help(função) 
     ?função
+    
+    str()                      # Descreve a estrutura de um objeto. Por ex: mostra os argumentos da função   
     
   # Programação eficiente:
     magrittr                   # Pacote com o operador "forward-pipe" %>% , que pode ser lido como "e então". Mais info: https://uc-r.github.io/pipe
@@ -60,24 +62,50 @@
       read_csv                 (readr)    # Funções otimizadas. Muito mais rápidas na importação dos dados! 
       read_table               (readr)    # ""
 
+      readLines(..., n)        # Ler apenas primeiras n linhas 
+      
       
   # Latex:
     latex2exp                  # Pacote que permite escrever em latex
     Tex()                      # Função para escrever em Latex
- 
-# ---------------------------------------
-# 2. MANIPULAÇÃO DE DADOS
-# 2.1 Pacotes
+    
+    
+
+# * 1.1 Debugging -------------------------------
+    traceback()                # Deve ser chamada imediatamente após receber um erro. Indica em que nível da função o erro ocorreu.
+    debug(f)                   # Toda vez que a função f for chamada, abre o browser do debug
+    undebug(f)                 # Desliga o gatilho de debug da função f
+    # Comandos no browser:
+     # n: executa a expressão atual e move para a próxima
+     # c: executa a função inteira até o final ou até um erro
+     # Q: fecha o browser
+    
+    options(error = recover)   # Quando ocorre um erro, em vez de fechar a função, abre opções de browser.
+    
+
+# * 1.2 Profiling  ------------------------------
+# "Profiling is a systematic way to examine how much time is spent in different parts of a program.
+    system.time({})            # Retorna quanto tempo a expressão nos {} levou para processar
+     # User time x system time (podem ser diferentes quando há paralelização)
+    
+    Rprof()                    # Liga o profiler. Passa a "contar o tempo"
+    Rprof(NULL)                # Desliga o profiler. Retorna produto bruto do que foi feito enquanto estava ligado.
+    summaryRprof()             # Tabula e "traduz" o tempo medido pelo profiler.
+        
+
+# 2. MANIPULAÇÃO DE DADOS -----------------------
+# * 2.1 Pacotes ---------------------------------
       tidyverse                # Conjunto de pacotes para data science
       dplyr                    # Manipular dados
       stats                    # Lidar com séries de tempo
       tseries                  # " "
       lubridate                # Lidar com datas
       stringi                  # Lidar com strings ("plural" de character)
-
+      boot                     # Simulação com bootstrap
+ 
       
       
-# 2.2 Funções
+# * 2.2 Funções ----------------------------------
   # Criar data frames:
     data.frame()               # Criar dataframe a partir dos inputs
     - data.frame(nome1 = v1, nome2 = v2, row.names = vetordenomes)
@@ -101,7 +129,20 @@
     mutate()                   # Adiciona novas variáveis (colunas) ou transforma variáveis existentes
     summarize()                # Gera um resumo de estatísticas descritivas das variáveis no dataframe
     
-    
+   
+  # Subconjuntos de dados:
+    split(x,factor)            # Divide o df x em grupos determinados por factor
+    gl(n,k)                    # Função generate levels: cria fator que divide em n grupos de k elementos 
+
+    # Ex: split(x,gl(n,k)) divide o df x em n grupos de k elementos. 
+    # Ex2: Split pode usar categoria já existente do df: split(DF, DF$month) 
+    # Ex3: lapply(split(x,factor),f) : aplica a função f aos subgrupos de x gerados pelo factor (que pode ser gerado por gl) 
+        
+    quantile()                 # Divide o array ou df em quantis, informando os % desejados   
+    subset()                   # Retorna um subconjunto do df/array que satisfaz uma condição lógica. Para df, retorna LINHAS.
+    unique()                   # Remove elementos repetidos   
+        
+     
   # Funções para nomear objetos:   
     # Data frame:  
       names()                  # Atribui um nome y a um objeto x: names(x) = y
@@ -112,19 +153,19 @@
       colnames()
       rownames()      
       
+    make.names()               # Converte um vetor character em uma lista de nomes sintaticamente válidos para as variáveis (tira espaços e outros símbolos não suportados) 
       
       
-# 2.3 Estatísticas descritivas
+# * 2.3 Estatísticas descritivas ----------------
   skimr                        # Pacote    
   skimr::skim_to_wide()        # Função - Retorna um data frame com um resumo das informações de forma visualmente organizada
   
-  str()                        # Compactly display the internal structure of an R object
   summary()                    # Semelhante a str()
   summarize()                  # Gera um resumo de estatísticas descritivas das variáveis
   
   
   
-# 2.4 Datas e Tempo
+# * 2.4 Datas e Tempo ---------------------------
   # Data: classe DATE
   # Tempo: classes POSIXct e POIXlt
   
@@ -135,18 +176,24 @@
     as.POSIXlt()
   
     
+# * 2.5 Character e Strings  --------------------
+    strsplit()                 # Divide string conforme o separador informado
+    paste()                    # Junta strings conforme o separador informado
+    stri_sub()      (stringi)  # Substitui ou acrescenta characters em uma string
     
-# ---------------------------------------    
-# 3. MACHINE LEARNING      
-# 3.1 Pacotes
+    
+
+    
+        
+# 3. MACHINE LEARNING ---------------------------     
+# * 3.1 Pacotes ---------------------------------
   caret
   tidymodels    
       
     
     
-# ---------------------------------------
-# 4. FUNÇÕES
-# 4.1 Matrizes
+# 4. FUNÇÕES ------------------------------------
+# * 4.1 Matrizes --------------------------------
   t()                          # Transposta
   diag()                       # diag(A) = vetor das entradas da diagonal principal; diag(x) = retorna matriz diagonal com elementos de x
   solve()                      # Inversa (função que resolve sistemas de equações)
@@ -167,7 +214,7 @@
       
     
 
-# 4.2 Otimização 
+# *4.2 Otimização -------------------------------
   optimize()                   # Geral, 1 dimensão
   optim()                      # Geral, n dimensões
   lp()        (lpSolve)        # Programação linear (objetivo e restrições lineares)
@@ -179,19 +226,37 @@
 
 
   
-# 4.3 Variáveis aleatórias
+# * 4.3 Variáveis aleatórias --------------------
+  # Grupos de funções de variáveis aleatórias:
+    # r: random number generator
+    # d: density function 
+    # p: cumulative function
+    # q: quantile function (inverse cumulative function): valor crítico tabelado
+  
   runif()                      # Gerar V.A. a partir da distribuição uniforme
   rnorm()                      # Gerar V.A. a partir da distribuição normal  
+  rbinom()                     # Gerar V.A. a partir da distribuição binomial
+  rpois()                      # Gerar V.A. a partir da distribuição Poisson
+  
+  # Simulação: gerando números aleatórios replicáveis
+  set.seed()
+  
+  sample(x,n)                  # Sorteia n elementos de x. Permutação: não informar n. Argumento: replace (TRUE or FALSE).    
+
+    
+# * 4.4 Loops -----------------------------------
+  seq_along()                  # seq_along(x) gera a sequência de inteiros 1:length(x). Para X matriz: seq_along(nrow(X))
+  lapply(x, f, ...)            # Loop que aplica a função f nos elementos da lista x; Output sempre é uma lista. x é usado como primeiro argumento de f, outros argumentos podem ser informados nos ...  
+  sapply(x, f, ...)            # Como lapply, mas simplifica o output (ex: se x é vetor, retorna vetor f(x) e não lista)
+  tapply(x, index, f, ...)     # Exclusiva para vetores: aplica a função f a subgrupos de x definidos pelo fator index; equivalente a combinação de loop + split      
+  apply(x, margin, f, ...)     # Avalia a função f em uma dimensão (margin) do array x. Ex: aplicar função nas linhas (margin = 1) de uma matriz 
+                                 # Caso geral das funções rowSums/colSums e rowMeans/colMeans
+  mapply(f,x,y)                # Loop multivariado: aplica a função f, passando a lista x como primeiro argumento e a lista y como segundo argumento. Resulta: f(x1,y1), f(x2,y2), ...
+                              
   
   
-# 4.4 Loops
-  seq_along()                  # seq_along(x) gera a sequência de inteiros 1:length(x)
-                               ## Para X matriz: seq_along(nrow(X))
      
-  
-     
-# ---------------------------------------
-# 5. ALGUNS EXEMPLOS
+# 5. ALGUNS EXEMPLOS ----------------------------
 ### Editando o formato de data de um dataframe: coluna "date" veio no formato "yyyymm"    
     date <- as.character(df$date)              # Transforma em character
     
@@ -256,7 +321,7 @@
       coord_cartesian(xlim = c(0,25), ylim = c(0,15)) +                      # Limites dos eixos
       theme_classic()                                                        # Tema do gráfico: fundo branco, eixo em preto
     
-    ggsave("Gráfico MV x Rho.jpeg", grafico, width = 15, units = "cm")
+    ggsave("Nome do gráfico.jpeg", grafico, width = 15, units = "cm")
     
     
     
