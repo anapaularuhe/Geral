@@ -90,10 +90,9 @@ log close
 *********************************************
 *** MANIPULAÇÃO DE DADOS  
 * sum or summarize    Estatísticas descritivas (obs: sum(x) é a soma, sum x é summarize); 
-  /* Pode ser combinada com condição lógica. Ex:
-     sum X if Y == 1  
-  */ 
-
+  * Pode ser combinada com condição lógica. Ex: sum X if Y == 1  
+   
+* describe            Produces a summary of the dataset in memory  
 * tab                 Resumo das características da variável
 * collapse 			  Converts the dataset in memory into a dataset of means, sums, medians, etc (Default é mean). Input must refer to numeric variables exclusively.
   * Ex: collapse (sum) x (sum) y [pesos = w]     
@@ -120,8 +119,23 @@ log close
 
 * save                Salvar base: save "nome.dta", replace
 * export excel        Salvar base em xlsx
+* export delimited    Salvar base em csv
  
 
+*********************************************
+*** ESTIMAÇÃO
+* 1. OLS
+
+
+
+* 2. Séries Temporais
+/*
+  tset Var_i Var_t        | Identifica dimensões do painel. Ex: tset Nome Ano 
+
+
+*/ 
+ 
+ 
 *********************************************
 *** PACOTES
 * Instalando: ssc install NOMEDOPACOTE
